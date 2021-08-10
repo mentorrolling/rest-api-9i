@@ -1,4 +1,8 @@
 const { request, response } = require("express");
+const bcryptjs = require("bcryptjs"); //importamos para encriptar
+
+const { validationResult } = require("express-validator");
+
 const Usuario = require("../models/usuario");
 
 const usuariosGet = (req = request, res = response) => {
@@ -8,9 +12,18 @@ const usuariosGet = (req = request, res = response) => {
 };
 
 const usuariosPost = async (req = request, res = response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json(errors);
+  }
+
   const { nombre, email, password, rol } = req.body;
 
-  const usuario = new Usuario({ nombre, email, password, rol });
+  const usuario = new Usuario({ nombre, password, email, rol });
+  //Encriptar contraseña
+  const salt = bcryptjs.genSaltSync(); //Numero de veces que se aplica la encriptación
+
+  usuario.password = bcryptjs.hashSync(password, salt); //encriptamos la contraseña
 
   await usuario.save();
 
@@ -20,14 +33,40 @@ const usuariosPost = async (req = request, res = response) => {
   });
 };
 
-const usuariosPut = (req = request, res = response) => {
+const usuariosPut = async (req = request, res = response) => {
+  const id = req.params.id;
+
+  const { _id, password, email, google, ...resto } = req.body;
+
+  //Validar datos
+  if (password) {
+    //Encriptar contraseña
+    const salt = bcrypt.genSaltSync(); //numero de veces que se aplicará encriptación
+    resto.password = bcrypt.hashSync(password, salt); //encriptación de contraseña
+  }
+
+  //Actualizar la data del usuario y guardar la respuesta en usuario
+  const usuario = await Usuario.findByIdAndUpdate(id, resto, { new: true });
+
   res.json({
-    msg: "PUT usuarios",
+    message: "Usuario actualizado",
+    usuario,
   });
 };
-const usuariosDelete = (req = request, res = response) => {
+const usuariosDelete = async (req = request, res = response) => {
+  const { id } = req.params;
+
+  //Borrar fisicamente
+
+  // const usuario = await Usuario.findByIdAndDelete(id);
+
+  //Inactivar usuario
+  const usuario = await Usuario.findByIdAndUpdate(id, { estado: false });
+
+  // const usuarioAutenticado = req.usuario;
+
   res.json({
-    msg: "Delete usuarios",
+    usuario,
   });
 };
 

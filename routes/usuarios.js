@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const { check } = require("express-validator"); //importo para hacer validaciones
 
 const router = Router();
 
@@ -11,7 +12,11 @@ const {
 
 router.get("/", usuariosGet);
 
-router.post("/", usuariosPost);
+router.post(
+  "/",
+  [check("nombre", "El nombre es obligatorio").not().isEmpty()],
+  usuariosPost
+);
 
 router.put("/:id", usuariosPut);
 
