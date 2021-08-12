@@ -2,8 +2,9 @@
   "name": "rest-api",
   "version": "1.0.0",
   "description": "Rest api del modulo 4 de fullstack",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
+    "start": "nodemon .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Pablo Marino",

@@ -1,8 +1,6 @@
 const { request, response } = require("express");
 const bcryptjs = require("bcryptjs"); //importamos para encriptar
 
-const { validationResult } = require("express-validator");
-
 const Usuario = require("../models/usuario");
 
 const usuariosGet = (req = request, res = response) => {
@@ -12,11 +10,6 @@ const usuariosGet = (req = request, res = response) => {
 };
 
 const usuariosPost = async (req = request, res = response) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json(errors);
-  }
-
   const { nombre, email, password, rol } = req.body;
 
   const usuario = new Usuario({ nombre, password, email, rol });
@@ -41,8 +34,8 @@ const usuariosPut = async (req = request, res = response) => {
   //Validar datos
   if (password) {
     //Encriptar contraseña
-    const salt = bcrypt.genSaltSync(); //numero de veces que se aplicará encriptación
-    resto.password = bcrypt.hashSync(password, salt); //encriptación de contraseña
+    const salt = bcryptjs.genSaltSync(); //numero de veces que se aplicará encriptación
+    resto.password = bcryptjs.hashSync(password, salt); //encriptación de contraseña
   }
 
   //Actualizar la data del usuario y guardar la respuesta en usuario
