@@ -4,7 +4,7 @@
   "description": "Rest api del modulo 4 de fullstack",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon .",
+    "start": "node app",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Pablo Marino",
