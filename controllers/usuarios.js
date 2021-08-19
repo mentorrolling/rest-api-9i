@@ -3,9 +3,22 @@ const bcryptjs = require("bcryptjs"); //importamos para encriptar
 
 const Usuario = require("../models/usuario");
 
-const usuariosGet = (req = request, res = response) => {
+const usuariosGet = async (req = request, res = response) => {
+  // console.log(req.query);
+  let { limite = 10, desde = 0 } = req.query;
+
+  limite = Number(limite);
+  desde = Number(desde);
+
+  const usuarios = await Usuario.find({ estado: true })
+    .limit(limite)
+    .skip(desde);
+
+  const total = await Usuario.countDocuments({ estado: true });
+
   res.json({
-    msg: "GET usuarios",
+    Total: total,
+    usuarios,
   });
 };
 
@@ -54,7 +67,11 @@ const usuariosDelete = async (req = request, res = response) => {
   // const usuario = await Usuario.findByIdAndDelete(id);
 
   //Inactivar usuario
-  const usuario = await Usuario.findByIdAndUpdate(id, { estado: false });
+  const usuario = await Usuario.findByIdAndUpdate(
+    id,
+    { estado: false },
+    { new: true }
+  );
 
   // const usuarioAutenticado = req.usuario;
 

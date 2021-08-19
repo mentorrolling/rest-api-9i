@@ -32,4 +32,11 @@ const UsuarioSchema = new Schema({
   },
 });
 
+//para no mostrar password ni __v
+UsuarioSchema.methods.toJSON = function () {
+  const { password, __v, _id, ...usuario } = this.toObject();
+  usuario.uid = _id;
+  return usuario;
+};
+
 module.exports = model("Usuario", UsuarioSchema);
