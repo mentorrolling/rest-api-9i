@@ -11,7 +11,12 @@ class Server {
     this.app = express();
     this.usuariosPath = "/api/usuarios";
     this.authPath = "/api/auth";
-
+    //path categorias
+    this.categoriasPath = "/api/categorias";
+    //path productos
+    this.productosPath = "/api/productos";
+    //path buscador
+    this.buscarPath = "/api/buscar";
     //conexion
     this.conectarDB();
     //middlewares
@@ -40,6 +45,9 @@ class Server {
   routes() {
     this.app.use(this.authPath, require("../routes/auth"));
     this.app.use(this.usuariosPath, require("../routes/usuarios"));
+    this.app.use(this.categoriasPath, require("../routes/categorias"));
+    this.app.use(this.productosPath, require("../routes/productos"));
+    this.app.use(this.buscarPath, require("../routes/buscar"));
   }
 
   listen() {

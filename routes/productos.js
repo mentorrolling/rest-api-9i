@@ -3,9 +3,11 @@ const { check } = require("express-validator"); //importo para hacer validacione
 
 const { existeProducto } = require("../helpers/db-validators");
 const { existeCategoria } = require("../helpers/db-validators");
+
+//middlewares
 const { validarCampos } = require("../middlewares/validar-campos");
 const { validarJWT } = require("../middlewares/validar-jwt");
-const { esAdminRole } = require("../middlewares/validar-roles");
+const { esAdminRole } = require("../middlewares/validar-rol");
 
 const {
   obtenerProductos,

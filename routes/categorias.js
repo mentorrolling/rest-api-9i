@@ -2,9 +2,10 @@ const { Router } = require("express");
 const { check } = require("express-validator"); //importo para hacer validaciones
 
 const { existeCategoria } = require("../helpers/db-validators");
+
 const { validarCampos } = require("../middlewares/validar-campos");
 const { validarJWT } = require("../middlewares/validar-jwt");
-const { esAdminRole } = require("../middlewares/validar-roles");
+const { esAdminRole } = require("../middlewares/validar-rol");
 
 const {
   crearCategorias,
@@ -19,7 +20,7 @@ const router = Router();
 //Obtener todas las categorias - publico
 router.get("/", obtenerCategorias);
 
-//Obtener todas las categoria por id - publico
+//Obtener la categoria por id - publico
 router.get(
   "/:id",
   [
@@ -35,6 +36,7 @@ router.post(
   "/",
   [
     validarJWT,
+    esAdminRole,
     check("nombre", "El nombre es obligatorio").not().isEmpty(),
 
     validarCampos,

@@ -47,6 +47,7 @@ const obtenerCategoria = async (req, res = response) => {
 const crearCategorias = async (req, res = response) => {
   const nombre = req.body.nombre.toUpperCase();
 
+  //verificar si la categoria existe
   const categoriaDB = await Categoria.findOne({ nombre });
 
   if (categoriaDB) {
@@ -71,8 +72,11 @@ const crearCategorias = async (req, res = response) => {
 //Actualizar categoria--------------------------------
 const actualizarCategoria = async (req, res = response) => {
   const { id } = req.params;
+
   const { _id, ...resto } = req.body;
+
   resto.nombre = resto.nombre.toUpperCase();
+  resto.usuario = req.usuario._id;
 
   const categoria = await Categoria.findByIdAndUpdate(id, resto, {
     new: true,

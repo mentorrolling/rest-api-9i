@@ -48,19 +48,6 @@ const obtenerProducto = async (req, res = response) => {
 const crearProductos = async (req, res = response) => {
   const { estado, usuario, ...body } = req.body;
 
-  // let { precio, categoria, descripcion, nombre } = req.body;
-  // nombre = nombre.toUpperCase();
-  // categoria = categoria.toUpperCase();
-
-  // const categoriaDB = await Categoria.findOne({
-  //   nombre: categoria,
-  // });
-  // if (!categoriaDB) {
-  //   return res.status(400).json({
-  //     msg: `La categoría ${categoria} no existe`,
-  //   });
-  // }
-
   const productoDB = await Producto.findOne({
     nombre: body.nombre.toUpperCase(),
   });
@@ -70,15 +57,6 @@ const crearProductos = async (req, res = response) => {
       msg: `El producto ${productoDB.nombre} ya existe`,
     });
   }
-
-  //Generar la data
-  // const data = {
-  //   nombre,
-  //   precio,
-  //   usuario: req.usuario._id,
-  //   categoria: categoriaDB._id,
-  //   descripcion,
-  // };
 
   const data = {
     ...body,
